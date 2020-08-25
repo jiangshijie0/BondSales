@@ -7,6 +7,9 @@ spring:
     continue-on-error: true
     hikari:
       connection-timeout: 10000
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
 logging:
   level:

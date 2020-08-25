@@ -1,19 +1,22 @@
-package com.group4.backend.controllers;
+package com.group4.backend.controller;
 
-import com.group4.backend.dao.EmployeeDAO;
 import com.group4.backend.entity.Employee;
-import com.group4.backend.services.UserService;
+import com.group4.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.*;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
 public class TestController {
+
+	@RequestMapping("index")
+	public String index() {
+		return "index";
+	}
 
 	@RequestMapping("testDirect")
 	@ResponseBody

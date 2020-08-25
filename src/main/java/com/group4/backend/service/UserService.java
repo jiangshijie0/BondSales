@@ -1,7 +1,6 @@
-package com.group4.backend.services;
+package com.group4.backend.service;
 
 import com.group4.backend.entity.Employee;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

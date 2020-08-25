@@ -1,8 +1,8 @@
-package com.group4.backend.services.impl;
+package com.group4.backend.service.impl;
 
 import com.group4.backend.dao.EmployeeDAO;
 import com.group4.backend.entity.Employee;
-import com.group4.backend.services.UserService;
+import com.group4.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
