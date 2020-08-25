@@ -5,4 +5,5 @@ import org.springframework.stereotype.Service;
 
 public interface DemoUserService {
 	public boolean verifyUser(DemoUser demoUser);
+	public void checkDuplicateUser(DemoUser demoUser);
 }

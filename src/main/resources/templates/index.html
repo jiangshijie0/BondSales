@@ -15,9 +15,21 @@
                 }
             });
         }
+        function register() {
+            //1.获取需要提交的数据
+            var name = $("#name").val();
+            var pass = $("#pass").val();
+            //2.通过ajax提交数据到“stu/add”
+            $.post("test/register",{name:name,pass:pass},function(data){
+                console.log(data);
+            },"json");
+        }
     </script>
 </head>
 <body>
 <button onclick="test()">login</button>
+<input type="text" name="name" />
+<input type="text" name="pass" />
+<button onclick="register()">register</button>
 </body>
 </html>

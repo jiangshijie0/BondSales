@@ -1,8 +1,5 @@
 package com.group4.backend.entity;
 
-import oracle.sql.DATE;
-import oracle.sql.NUMBER;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 
