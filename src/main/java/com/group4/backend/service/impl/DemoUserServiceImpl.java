@@ -12,9 +12,9 @@ public class DemoUserServiceImpl implements DemoUserService {
 	DemoUserDAO demoUserDAO;
 
 	@Override
-	public boolean verifyUser(String name, String pass) {
-		DemoUser demoUser = demoUserDAO.queryUser(name, pass);
-		if (pass.equals(demoUser.getPass())) return true;
-		return false;
+	public boolean verifyUser(DemoUser demoUser) {
+		DemoUser demoUserResult = demoUserDAO.queryUser(demoUser);
+		if (demoUserResult == null) return false;
+		return demoUserResult.getPass().equals(demoUser.getPass());
 	}
 }

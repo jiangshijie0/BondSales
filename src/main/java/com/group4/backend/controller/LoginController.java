@@ -1,5 +1,6 @@
 package com.group4.backend.controller;
 
+import com.group4.backend.entity.DemoUser;
 import com.group4.backend.service.DemoUserService;
 import com.group4.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,18 @@ public class LoginController {
 	@RequestMapping("loginTest")
 	@ResponseBody
 	public String loginTest() {
-		boolean result = demoUserService.verifyUser("jiangshijie0@qq.com", "password");
+		DemoUser demoUser = new DemoUser();
+		demoUser.setName("jiangshijie0@qq.com");
+		demoUser.setPass("password");
+		boolean result = demoUserService.verifyUser(demoUser);
 		return result + "";
 	}
 
 	@PostMapping("login")
 	@ResponseBody
-	public String login(@RequestBody String json, HttpServletRequest request) {
-		System.out.println(json);
-		request.getSession();
-		return "false";
+	public String login(@RequestBody DemoUser user, HttpServletRequest request) {
+		boolean result = demoUserService.verifyUser(user);
+		if (result) return user.getName() + " login successfully";
+		return user.getName() + " login fail";
 	}
 }
