@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
-    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script language="javascript">
         function test() {
             $.ajax({
@@ -12,8 +12,8 @@
                 contentType: "application/json;charset=UTF-8",
                 url: "http://127.0.0.1:8080/login",      //你的controller地址
                 data: JSON.stringify({
-                    "name":"jiangshijie0@qq.com",
-                    "pass":"password"
+                    'name':"jiangshijie0@qq.com",
+                    'pass':"password"
                 }),
                 success: function (data) {
                     console.log(data);
@@ -23,7 +23,7 @@
     </script>
 </head>
 <body>
-<img src="/img/Ivy.png">
+<img src="../static/img/Ivy.png">
 <button onclick="test();">login</button>
 </body>
 </html>
