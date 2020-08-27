@@ -31,12 +31,24 @@
         <result property="updatedAt" column="UPDATED_AT"/>
     </resultMap>
 
-    <select id="orderBySaleName" resultType="DemoBond" parameterType="DemoBond">
-        select * from DEMO_BONDS_SALES_RECORD WHERE SALES_NAME = #{saleName}
+    <resultMap id="salesNameMap" type="java.util.Map" >
+        <result column="name" property="key" jdbcType="VARCHAR" />
+        <result column="amount" property="value" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="orderBySaleName" resultMap="salesNameMap" parameterType="DemoBond">
+        select SALES_NAME as name, SUM(AMOUNT) as amount
+        from DEMO_BONDS_SALES_RECORD GROUP BY SALES_NAME order by AMOUNT DESC
     </select>
 
-    <select id="orderByCreated" resultType="DemoBond" parameterType="DemoBond">
-        select * from DEMO_BONDS_SALES_RECORD WHERE CREATED_AT = #{createdAt}
+    <resultMap id="createdAtMap" type="java.util.Map" >
+        <result column="name" property="key" jdbcType="DATE" />
+        <result column="amount" property="value" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="orderByCreated" resultMap="createdAtMap" parameterType="DemoBond">
+        select TO_CHAR(CREATED_AT, 'yyyy-MM-dd') as name, SUM(AMOUNT) as amount
+        from DEMO_BONDS_SALES_RECORD GROUP BY CREATED_AT ORDER BY CREATED_AT
     </select>
 
     <insert id="addRecord">

@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("BondSaleCtrl")
@@ -55,13 +56,11 @@ public class BondSaleController {
     @RequestMapping("/ordersale")
     @ResponseBody
     public String orderBySaleName(@RequestBody DemoBond demoBond, HttpServletRequest request) {
+        System.out.println(demoBond);
         if (!UserTool.loginStatus) return null;
-        List<DemoBond> result = demoBondService.orderBySaleName(demoBond);
-        int sum = 0;
-        for (DemoBond d : result) {
-            sum += d.getAmount().intValue();
-        }
-        return JSONObject.toJSONString(sum);
+        List<Map<String, String>> result = demoBondService.orderBySaleName(demoBond);
+
+        return JSONObject.toJSONString(result);
     }
 
     @RequestMapping("/orderdate")
@@ -69,19 +68,15 @@ public class BondSaleController {
     public String orderByCreated(@RequestBody DemoBond demoBond, HttpServletRequest request) {
         System.out.println(demoBond);
         if (!UserTool.loginStatus) return null;
-        List<DemoBond> result = demoBondService.orderByCreated(demoBond);
-        int sum = 0;
-        for (DemoBond d : result) {
-            System.out.println(d);
-            sum += d.getAmount().intValue();
-        }
-        return JSONObject.toJSONString(sum);
+        List<Map<String, String>> result = demoBondService.orderByCreated(demoBond);
+
+        return JSONObject.toJSONString(result);
     }
 
     @PostMapping("addRecord")
     @ResponseBody
     public String login(@RequestBody DemoBond bondSales, HttpServletRequest request) {
-        if (!UserTool.checkLogin(request)) return null;
+        if (!UserTool.loginStatus) return null;
         try {
             demoBondService.addRecord(bondSales);
         }

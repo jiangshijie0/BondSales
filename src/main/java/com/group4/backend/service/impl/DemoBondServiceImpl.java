@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DemoBondServiceImpl implements DemoBondService {
@@ -27,12 +28,12 @@ public class DemoBondServiceImpl implements DemoBondService {
     }
 
     @Override
-    public List<DemoBond> orderBySaleName(DemoBond demoBond) {
+    public List<Map<String, String>> orderBySaleName(DemoBond demoBond) {
         return demoBondDAO.orderBySaleName(demoBond);
     }
 
     @Override
-    public List<DemoBond> orderByCreated(DemoBond demoBond) {
+    public List<Map<String, String>> orderByCreated(DemoBond demoBond) {
         return demoBondDAO.orderByCreated(demoBond);
     }
 
