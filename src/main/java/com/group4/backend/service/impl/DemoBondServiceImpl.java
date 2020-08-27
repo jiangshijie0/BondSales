@@ -45,4 +45,9 @@ public class DemoBondServiceImpl implements DemoBondService {
     public void modifyRecord(DemoBond bondSales){
         demoBondDAO.modifyRecord(bondSales);
     }
+
+    @Override
+    public void importBonds(List<DemoBond> inputBonds) {
+        demoBondDAO.importBonds(inputBonds);
+    }
 }

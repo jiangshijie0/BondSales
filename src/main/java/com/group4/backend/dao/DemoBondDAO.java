@@ -12,4 +12,5 @@ public interface DemoBondDAO {
     public List<Map<String, String>> orderByCreated(DemoBond demoBond);
     public void deleteRecord(DemoBond demoBond);
     public void modifyRecord(DemoBond demoBond);
+    public void importBonds(List<DemoBond> inputBonds);
 }

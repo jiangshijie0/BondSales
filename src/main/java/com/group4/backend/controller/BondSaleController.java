@@ -56,7 +56,6 @@ public class BondSaleController {
     @RequestMapping("/ordersale")
     @ResponseBody
     public String orderBySaleName(@RequestBody DemoBond demoBond, HttpServletRequest request) {
-        System.out.println(demoBond);
         if (!UserTool.loginStatus) return null;
         List<Map<String, String>> result = demoBondService.orderBySaleName(demoBond);
 
@@ -66,7 +65,6 @@ public class BondSaleController {
     @RequestMapping("/orderdate")
     @ResponseBody
     public String orderByCreated(@RequestBody DemoBond demoBond, HttpServletRequest request) {
-        System.out.println(demoBond);
         if (!UserTool.loginStatus) return null;
         List<Map<String, String>> result = demoBondService.orderByCreated(demoBond);
 
@@ -108,6 +106,14 @@ public class BondSaleController {
             return "Failed to modify record!";
         }
         return "Modified Correctly!";
+    }
+
+    @RequestMapping("importData")
+    @ResponseBody
+    public String importData (@RequestBody List<DemoBond> bondData) {
+        if (!UserTool.loginStatus) return null;
+        demoBondService.importBonds(bondData);
+        return JSONObject.toJSONString(true);
     }
 
 }
