@@ -17,4 +17,13 @@ public class DemoUserServiceImpl implements DemoUserService {
 		if (demoUserResult == null) return false;
 		return demoUserResult.getPass().equals(demoUser.getPass());
 	}
+
+	@Override
+	public String checkDuplicateUser(DemoUser demoUser){
+		DemoUser demoUser1 = demoUserDAO.queryUser(demoUser);
+		if (demoUser1 == null){
+			demoUserDAO.addUser(demoUser);
+			return "success";
+		} else return "registered";
+	}
 }

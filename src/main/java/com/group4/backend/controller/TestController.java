@@ -1,5 +1,9 @@
 package com.group4.backend.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.group4.backend.entity.DemoUser;
 import com.group4.backend.entity.Employee;
 import com.group4.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +77,14 @@ public class TestController {
 	@RequestMapping("testIn")
 	@ResponseBody
 	public String testIn(@RequestBody String body) {
+		DemoUser d = JSONObject.parseObject(body, DemoUser.class);
+		System.out.println(d);
 		return body;
+	}
+
+
+	@RequestMapping("testPage")
+	public String testPage() {
+		return "test";
 	}
 }

@@ -9,4 +9,9 @@
         FROM DEMO_USER
         where NAME = #{name}
     </select>
+
+    <insert id="addUser">
+        insert into DEMO_USER (ID,NAME,PASS,CREATED_AT,UPDATED_AT,STATUS)
+        values (0,#{name},#{pass},null,null,1)
+    </insert>
 </mapper>

@@ -1,0 +1,118 @@
+package com.group4.backend.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.group4.backend.entity.DemoBond;
+import com.group4.backend.entity.DemoUser;
+import com.group4.backend.service.DemoBondService;
+import com.group4.backend.tool.UserTool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+@Controller
+@RequestMapping("BondSaleCtrl")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+public class BondSaleController {
+    @Autowired
+    private DemoBondService demoBondService;
+
+    @RequestMapping("/querybond")
+    @ResponseBody
+    public List<DemoBond> queryBond(@RequestParam("bondName") String bondName,
+                                    @RequestParam("saleName") String saleName,
+                                    @RequestParam("createdAt") String createdAt,
+                                    @RequestParam("amount") BigDecimal amount,
+                                    Model model) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newCreatedAt = sdf.parse(createdAt);
+        java.sql.Date dayDateSql = new java.sql.Date(newCreatedAt.getTime());
+        DemoBond demoBond = new DemoBond();
+        demoBond.setAmount(amount);
+        demoBond.setSaleName(saleName);
+        demoBond.setBondName(bondName);
+        demoBond.setCreatedAt(dayDateSql);
+        return demoBondService.queryBond(demoBond);
+    }
+
+    @RequestMapping("/queryBondByJson")
+    @ResponseBody
+    public List<DemoBond> queryBondByJson(@RequestBody String body, HttpServletRequest request) throws ParseException {
+        if (!UserTool.loginStatus) return null;
+        DemoBond demoBond = JSONObject.parseObject(body, DemoBond.class);
+
+        return demoBondService.queryBond(demoBond);
+    }
+
+    @RequestMapping("/ordersale")
+    @ResponseBody
+    public String orderBySaleName(@RequestBody DemoBond demoBond, HttpServletRequest request) {
+        if (!UserTool.loginStatus) return null;
+        List<DemoBond> result = demoBondService.orderBySaleName(demoBond);
+        int sum = 0;
+        for (DemoBond d : result) {
+            sum += d.getAmount().intValue();
+        }
+        return JSONObject.toJSONString(sum);
+    }
+
+    @RequestMapping("/orderdate")
+    @ResponseBody
+    public String orderByCreated(@RequestBody DemoBond demoBond, HttpServletRequest request) {
+        System.out.println(demoBond);
+        if (!UserTool.loginStatus) return null;
+        List<DemoBond> result = demoBondService.orderByCreated(demoBond);
+        int sum = 0;
+        for (DemoBond d : result) {
+            System.out.println(d);
+            sum += d.getAmount().intValue();
+        }
+        return JSONObject.toJSONString(sum);
+    }
+
+    @PostMapping("addRecord")
+    @ResponseBody
+    public String login(@RequestBody DemoBond bondSales, HttpServletRequest request) {
+        if (!UserTool.checkLogin(request)) return null;
+        try {
+            demoBondService.addRecord(bondSales);
+        }
+        catch(Exception e){
+            return JSONObject.toJSONString("Invalid Record!");
+        }
+        return JSONObject.toJSONString("Recorded Correctly!");
+    }
+
+    @PostMapping("deleteRecord")
+    @ResponseBody
+    public String deleteRecord(@RequestBody DemoBond bondSales, HttpServletRequest request) {
+        try {
+            demoBondService.deleteRecord(bondSales);
+        }
+        catch(Exception e){
+            return "Failed to delete record!";
+        }
+        return "Deleted Correctly!";
+    }
+
+    @PostMapping("modifyRecord")
+    @ResponseBody
+    public String modifyRecord(@RequestBody DemoBond bondSales, HttpServletRequest request) {
+        try {
+            demoBondService.modifyRecord(bondSales);
+        }
+        catch(Exception e){
+            return "Failed to modify record!";
+        }
+        return "Modified Correctly!";
+    }
+
+}
