@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.group4.backend.dao.DemoBondDAO">
+    <select id="queryBond" resultMap="_bond">
+        select * from DEMO_BONDS_SALES_RECORD
+        <where>
+            <if test="bondName != null and bondName!='' ">
+                and BONDS_NAME like CONCAT(#{bondName},'%')
+            </if>
+            <if test="saleName != null and saleName!='' ">
+                and SALES_NAME like CONCAT(#{saleName},'%')
+            </if>
+            <if test="createdAt != null">
+                and CREATED_AT like CONCAT(#{createdAt},'%')
+            </if>
+            <if test="amount != null and amount!='' ">
+                and AMOUNT like CONCAT(#{amount},'%')
+            </if>
+        </where>
+    </select>
+
+    <resultMap type="DemoBond" id="_bond">
+        <id property="id" column="ID"/>
+        <result property="bondName" column="BONDS_NAME"/>
+        <result property="saleName" column="SALES_NAME"/>
+        <result property="amount" column="AMOUNT"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="updatedAt" column="UPDATED_AT"/>
+    </resultMap>
+
+    <resultMap id="salesNameMap" type="java.util.Map">
+        <result column="name" property="key" jdbcType="VARCHAR"/>
+        <result column="amount" property="value" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="orderBySaleName" resultMap="salesNameMap" parameterType="DemoBond">
+        select SALES_NAME as name, SUM(AMOUNT) as amount
+        from DEMO_BONDS_SALES_RECORD
+        GROUP BY SALES_NAME
+        order by AMOUNT DESC
+    </select>
+
+    <resultMap id="createdAtMap" type="java.util.Map">
+        <result column="name" property="key" jdbcType="DATE"/>
+        <result column="amount" property="value" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="orderByCreated" resultMap="createdAtMap" parameterType="DemoBond">
+        select TO_CHAR(CREATED_AT, 'yyyy-MM-dd') as name, SUM(AMOUNT) as amount
+        from DEMO_BONDS_SALES_RECORD
+        GROUP BY CREATED_AT
+        ORDER BY CREATED_AT
+    </select>
+
+    <insert id="addRecord">
+        insert into DEMO_BONDS_SALES_RECORD (BONDS_NAME, SALES_NAME, AMOUNT, CREATED_AT, UPDATED_AT)
+        values (#{bondName}, #{saleName}, #{amount}, #{createdAt}, null)
+    </insert>
+
+    <delete id="deleteRecord">
+        delete
+        from DEMO_BONDS_SALES_RECORD
+        where ID = #{id}
+    </delete>
+
+    <update id="modifyRecord">
+        update DEMO_BONDS_SALES_RECORD
+        set BONDS_NAME = #{bondsName},
+            SALES_NAME = #{salesName},
+            AMOUNT     = #{amount}
+        where ID = #{id}
+    </update>
+
+    <insert id="importBonds" parameterType="java.util.List" useGeneratedKeys="false">
+        INSERT ALL
+        <foreach item="demoBond" index="index" collection="list">
+            INTO DEMO_BONDS_SALES_RECORD
+            (
+            ID,
+            BONDS_NAME,
+            SALES_NAME,
+            AMOUNT,
+            CREATED_AT,
+            UPDATED_AT
+            ) VALUES
+            (
+            null,
+            #{demoBond.bondName},
+            #{demoBond.saleName},
+            #{demoBond.amount},
+            #{demoBond.createdAt},
+            null
+            )
+        </foreach>
+        SELECT 1 FROM DUAL
+    </insert>
+
+
+</mapper>

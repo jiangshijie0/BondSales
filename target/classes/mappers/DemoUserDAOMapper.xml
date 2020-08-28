@@ -5,7 +5,9 @@
 
 <mapper namespace="com.group4.backend.dao.DemoUserDAO">
     <select id="queryUser" parameterType="DemoUser" resultType="DemoUser">
-        SELECT name, pass FROM DEMO_USER where NAME = #{name}
+        SELECT name, pass
+        FROM DEMO_USER
+        where NAME = #{name}
     </select>
 
     <insert id="addUser">
