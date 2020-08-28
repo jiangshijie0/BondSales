@@ -21,19 +21,12 @@ public class DemoUserServiceImpl implements DemoUserService {
 	}
 
 	@Override
-<<<<<<< HEAD
-	public void checkDuplicateUser(DemoUser demoUser){
-		DemoUser demoUser1 = demoUserDAO.queryUser(demoUser);
-		if (demoUser1 == null){
-			demoUserDAO.addUser(demoUser);
-		}
-=======
 	public String checkDuplicateUser(DemoUser demoUser){
 		DemoUser demoUser1 = demoUserDAO.queryUser(demoUser);
 		if (demoUser1 == null){
 			demoUserDAO.addUser(demoUser);
 			return "success";
 		} else return "registered";
->>>>>>> 7d5c46d80bc1fb100ef8154948ab2d5f26072951
+
 	}
 }
